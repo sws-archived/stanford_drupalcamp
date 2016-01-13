@@ -5,7 +5,7 @@ core = 7.x
 files[] = stanford_drupalcamp.install
 
 ; ITasks Config
-taskdir = sites/all/tasks
+taskdir = sites/all/libraries/tasks
 
 ; Install Tasks                          Install in the order they appear below.
 ; ------------------------------------------------------------------------------
@@ -13,51 +13,33 @@ taskdir = sites/all/tasks
 ; STANDARD INSTALL
 task[install][] = Drupal\Standard\Install\FilteredHTMLFormat
 task[install][] = Drupal\Standard\Install\FullHTMLFormat
-task[install][] = Drupal\Standard\Install\BasicPageContentType
-task[install][] = Drupal\Standard\Install\ArticleContentType
 task[install][] = Drupal\Standard\Install\GeneralConfig
 task[install][] = Drupal\Standard\Install\UserConfig
 task[install][] = Drupal\Standard\Install\AdministratorRole
 task[install][] = Drupal\Standard\Install\TagsTaxonomy
 task[install][] = Drupal\Standard\Install\ImageFieldBase
-task[install][] = Drupal\Standard\Install\ArticleTagsField
-task[install][] = Drupal\Standard\Install\ArticleImageFieldInstance
 task[install][] = Drupal\Standard\Install\StandardBlocks
 task[install][] = Drupal\Standard\Install\StandardMenu
 
 ; STANFORD INSTALL
-; task[install][] = Stanford\DrupalProfile\Install\Authentication
-task[install][] = Stanford\DrupalProfile\Install\ContentTypeArticleSettings
-task[install][] = Stanford\DrupalProfile\Install\ContentTypePageSettings
 task[install][] = Stanford\DrupalProfile\Install\DateTimeSettings
 task[install][] = Stanford\DrupalProfile\Install\UserPermissions
 task[install][] = Stanford\DrupalProfile\Install\SearchBlock
 task[install][] = Stanford\DrupalProfile\Install\GeneralSettings
 task[install][] = Stanford\DrupalProfile\Install\WYSIWYGSettings
 task[install][] = Stanford\DrupalProfile\Install\FileSettings
-task[install][] = Stanford\DrupalProfile\Install\StanfordSites\DisableModules
-task[install][] = Stanford\DrupalProfile\Install\StanfordSites\EnableModules
-task[install][] = Stanford\DrupalProfile\Install\StanfordSites\ThemeSettings
-task[install][] = Stanford\DrupalProfile\Install\StanfordSites\TMPDir
 
 ; JUMPSTART INSTALL
-; task[install][] = Stanford\Jumpstart\Install\Authentication
 task[install][] = Stanford\Jumpstart\Install\themeSettings
 task[install][] = Stanford\Jumpstart\Install\RevertAllFeatures
 task[install][] = Stanford\Jumpstart\Install\Content\Importer\LoadImporterLibrary
-task[install][] = Stanford\Jumpstart\Install\Content\ImportVocabularies
-task[install][] = Stanford\Jumpstart\Install\Content\ImportJSVNodes
-task[install][] = Stanford\Jumpstart\Install\Content\ImportJSVBeans
 task[install][] = Stanford\Jumpstart\Install\GeneralSettings
 task[install][] = Stanford\Jumpstart\Install\PathologicSettings
 task[install][] = Stanford\Jumpstart\Install\User\UserSettings
 task[install][] = Stanford\Jumpstart\Install\User\SunetUser
 task[install][] = Stanford\Jumpstart\Install\User\HowardUser
 task[install][] = Stanford\Jumpstart\Install\User\LindseyUser
-task[install][] = Stanford\Jumpstart\Install\Menu\MenuSettings
 task[install][] = Stanford\Jumpstart\Install\Block\BlockSettings
-task[install][] = Stanford\Jumpstart\Install\Block\RelatedLinksBlock
-task[install][] = Stanford\Jumpstart\Install\JumpstartSettings
 task[install][] = Stanford\Jumpstart\Install\JumpstartHomeStatic
 
 ; STANFORD DRUPALCAMP INSTALL
@@ -74,7 +56,11 @@ task[local][install][] = Environment\Local\Install\GeneralSettings
 
 ; SITES
 task[sites][install][] = Environment\Sites\Install\GeneralSettings
-; task[sites][update][] = Environment\Sites\Update\GeneralSettings
+task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\DisableModules
+task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\EnableModules
+task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\ThemeSettings
+task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\TMPDir
+task[sites][install][] = Stanford\Jumpstart\Install\Authentication
 
 ; ANCHORAGE
 task[anchorage][install][] = Environment\Anchorage\Install\GeneralSettings
@@ -162,27 +148,24 @@ dependencies[] = diff
 dependencies[] = metatag
 dependencies[] = menu_block
 dependencies[] = wysiwyg
-; dependencies[] = context_http_header
-; dependencies[] = context_useragent
 dependencies[] = uuid
 dependencies[] = better_formats
 
-; dependencies[] = stanford_bean_types
-; dependencies[] = stanford_bean_types_permissions
+dependencies[] = stanford_bean_types
 dependencies[] = stanford_image
 dependencies[] = stanford_image_styles
-; dependencies[] = stanford_metatag_nobots
+dependencies[] = nobots
 dependencies[] = stanford_page
 dependencies[] = stanford_landing_page
 dependencies[] = stanford_landing_page_node_convert
-; dependencies[] = stanford_jumpstart
-; dependencies[] = stanford_jumpstart_home
-; dependencies[] = stanford_jumpstart_login
+dependencies[] = stanford_jumpstart
+dependencies[] = stanford_jumpstart_home
+dependencies[] = stanford_jumpstart_login
 dependencies[] = stanford_jumpstart_shortcuts
 dependencies[] = stanford_jumpstart_site_actions
 dependencies[] = stanford_jumpstart_wysiwyg
-; dependencies[] = stanford_jumpstart_layouts
+dependencies[] = stanford_jumpstart_layouts
 dependencies[] = stanford_jumpstart_roles
-; dependencies[] = stanford_jumpstart_permissions
+dependencies[] = stanford_jumpstart_permissions
 dependencies[] = stanford_date_timepicker
 dependencies[] = stanford_manage_content
