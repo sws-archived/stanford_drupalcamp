@@ -166,6 +166,6 @@ dependencies[] = stanford_jumpstart_wysiwyg
 dependencies[] = stanford_jumpstart_roles
 dependencies[] = stanford_date_timepicker
 dependencies[] = stanford_manage_content
-dependencies[] = stanford_event_importer
+dependencies[] = stanford_events_importer
 dependencies[] = stanford_news
 dependencies[] = stanford_news_views
