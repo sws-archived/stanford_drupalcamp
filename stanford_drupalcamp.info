@@ -41,7 +41,6 @@ task[install][] = Stanford\Jumpstart\Install\User\SunetUser
 task[install][] = Stanford\Jumpstart\Install\User\HowardUser
 task[install][] = Stanford\Jumpstart\Install\User\LindseyUser
 task[install][] = Stanford\Jumpstart\Install\Block\BlockSettings
-task[install][] = Stanford\Jumpstart\Install\JumpstartHomeStatic
 
 ; STANFORD DRUPALCAMP INSTALL
 task[install][] = Stanford\DrupalCamp\Install\AdminTheme
