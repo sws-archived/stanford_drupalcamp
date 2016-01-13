@@ -31,7 +31,7 @@ task[install][] = Stanford\DrupalProfile\Install\WYSIWYGSettings
 task[install][] = Stanford\DrupalProfile\Install\FileSettings
 
 ; JUMPSTART INSTALL
-task[install][] = Stanford\Jumpstart\Install\themeSettings
+task[install][] = Stanford\Jumpstart\Install\ThemeSettings
 task[install][] = Stanford\Jumpstart\Install\RevertAllFeatures
 task[install][] = Stanford\Jumpstart\Install\Content\Importer\LoadImporterLibrary
 task[install][] = Stanford\Jumpstart\Install\GeneralSettings
@@ -166,3 +166,5 @@ dependencies[] = stanford_date_timepicker
 dependencies[] = stanford_events_importer
 dependencies[] = stanford_news
 dependencies[] = stanford_news_views
+dependencies[] = stanford_drupalcamp_features
+dependencies[] = stanford_drupalcamp_layouts
