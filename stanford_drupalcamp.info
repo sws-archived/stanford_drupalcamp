@@ -183,6 +183,7 @@ dependencies[] = stanford_drupalcamp_features
 dependencies[] = stanford_drupalcamp_layouts
 dependencies[] = stanford_drupalcamp_registration
 dependencies[] = stanford_drupalcamp_sessions
+dependencies[] = stanford_drupalcamp_sponsor
 dependencies[] = stanford_easy_wysiwyg_css
 dependencies[] = stanford_events_importer
 dependencies[] = stanford_image
