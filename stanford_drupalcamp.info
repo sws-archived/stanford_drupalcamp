@@ -51,6 +51,10 @@ task[install][] = Stanford\DrupalCamp\Install\Content\ImportDrupalCampNodes
 task[install][] = Stanford\DrupalCamp\Install\ThemeSettings
 task[install][] = Stanford\DrupalCamp\Install\MenuSettings
 task[install][] = Stanford\DrupalCamp\Install\GeneralConfiguration
+task[install][] = Stanford\DrupalCamp\Install\BlockClass
+task[install][] = Stanford\DrupalCamp\Install\UserPermissions
+task[install][] = Stanford\DrupalCamp\Install\AccountSettings
+task[install][] = Stanford\DrupalCamp\Install\MollomSettings
 
 ; Needs to be last because of raisons.
 task[install][] = Stanford\DrupalProfile\Install\PrivateFileSettings
