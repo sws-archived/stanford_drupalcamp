@@ -4,8 +4,8 @@
  * Enables modules and site configuration for a minimal site installation.
  */
 
-// Need this because of the early part of the install process.
-require_once dirname(__FILE__) . "/includes/loader.php";
+ // Need this because of the early part of the install process.
+ require_once dirname(__FILE__) . "/includes/iTasks.php";
 
 /**
  * Call through to itasks_install module.

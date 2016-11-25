@@ -5,19 +5,12 @@
  */
 
 /**
- * Include the files necessary to do the install tasks.
+ * Find and load up the autoload file.
  */
-function itasks_includes() {
-
-  // Things take a long time to run. Lets try to up the limit.
-  ini_set('max_execution_time', 300); //300 seconds = 5 minutes
-
-  require_once dirname(__FILE__) . "/InstallTaskInterface.php";
-  require_once dirname(__FILE__) . "/AbstractTask.php";
-  require_once dirname(__FILE__) . "/AbstractInstallTask.php";
-  require_once dirname(__FILE__) . "/AbstractUpdateTask.php";
-  require_once dirname(__FILE__) . "/TaskEngine.php";
-
+function itasks_autoload_library($profile = "stanford_drupalcamp") {
+  $profile_info = drupal_parse_info_file(DRUPAL_ROOT . "/profiles/" . $profile . "/" . $profile . ".info");
+  $task_dir = $profile_info["taskdir"];
+  require_once DRUPAL_ROOT . "/" . $task_dir . "/autoloader.php";
 }
 
 /**
@@ -27,10 +20,11 @@ function itasks_includes() {
  */
 function itasks_form_install_configure_form_alter(&$form, $form_state) {
 
-  itasks_includes();
+  // Load the required files.
+  itasks_autoload_library();
 
   // Find out what other groups we have.
-  $engine = new TaskEngine($form_state['build_info']['args'][0]['profile_info'], $form_state['build_info']['args'][0]);
+  $engine = new \ITasks\TaskEngine($form_state['build_info']['args'][0]['profile_info'], $form_state['build_info']['args'][0]);
   $tasks = $engine->getTasks();
 
   // Get rid of the default ones.
@@ -61,11 +55,8 @@ function itasks_form_install_configure_form_alter(&$form, $form_state) {
   // // Pre-populate the site name with the server name.
   $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
 
-  // This is not ready..
-  // $form = $engine->getTaskOptionsForm($form, $form_state);
-
-  // $form["#validate"][] = "itasks_install_form_install_configure_form_alter_validate";
-  // $form["#submit"][] = "itasks_install_form_install_configure_form_alter_submit";
+  // Allow each task to alter the form.
+  $engine->getConfigureFormFields($form, $form_state);
 
 }
 
@@ -75,11 +66,13 @@ function itasks_form_install_configure_form_alter(&$form, $form_state) {
  * @param  [type] &$form_state [description]
  * @return [type]              [description]
  */
-function itasks_form_install_configure_form_alter_validate($form, &$form_state) {
-  if (empty($form_state['values']['itasks']['tasks'])) {
-    return;
-  }
-  // Do something here.....
+function itasks_form_install_configure_form_alter_validate(&$form, &$form_state) {
+  // Load the required files.
+  itasks_autoload_library();
+
+  $engine = new \ITasks\TaskEngine($form_state['build_info']['args'][0]['profile_info'], $form_state['build_info']['args'][0]);
+  $engine->getConfigureFormValidate($form, $form_state);
+
 }
 
 /**
@@ -88,11 +81,17 @@ function itasks_form_install_configure_form_alter_validate($form, &$form_state) 
  * @param  [type] &$form_state [description]
  * @return [type]              [description]
  */
-function itasks_form_install_configure_form_alter_submit($form, &$form_state) {
-  // if (empty($form_state['values']['itasks']['tasks'])) {
-  //   return;
-  // }
-  // $form_state['build_info']['args'][0]['install_task_list'] = $form_state['values']['itasks']['tasks'];
+function itasks_form_install_configure_form_alter_submit(&$form, &$form_state) {
+  // Load the required files.
+  itasks_autoload_library();
+
+  // Force the pass through of all the variables when installing through the UI.
+  if (isset($form_state["build_info"]["args"][0]["interactive"]) && $form_state["build_info"]["args"][0]["interactive"]) {
+    $form_state["build_info"]["args"][0]["forms"]["install_configure_form"] = $form_state["values"];
+  }
+
+  $engine = new \ITasks\TaskEngine($form_state['build_info']['args'][0]['profile_info'], $form_state['build_info']['args'][0]);
+  $engine->getConfigureFormSubmit($form, $form_state);
 }
 
 /**
@@ -102,11 +101,13 @@ function itasks_form_install_configure_form_alter_submit($form, &$form_state) {
  * and add them to the task array.
  */
 function itasks_install_tasks(&$install_state) {
-  itasks_includes();
+  // Load the required files.
+  itasks_autoload_library();
+
   $profile_name = $install_state['parameters']['profile'];
   $info_file = drupal_get_path('profile', $profile_name) . "/" . $profile_name . ".info";
   $install_state['profile_info'] = drupal_parse_info_file($info_file);
-  $engine = new TaskEngine($install_state['profile_info'], $install_state);
+  $engine = new \Itasks\TaskEngine($install_state['profile_info'], $install_state);
   return $engine->getInstallTaskArray();
 }
 
@@ -118,9 +119,19 @@ function itasks_install_tasks(&$install_state) {
  * dependencies to the veryify check before executing it.
  */
 function itasks_install_tasks_alter(&$tasks, &$install_state) {
-  itasks_includes();
-  $engine = new TaskEngine($install_state['profile_info'], $install_state);
+  // Load the required files.
+  itasks_autoload_library();
+
+  $engine = new \ITasks\TaskEngine($install_state['profile_info'], $install_state);
   $iTasks = $engine->getTasks("install");
+
+  // Check for any extra tasks and loop them in so they get altered as well.
+  $extras = $engine->getTasks($engine->getExtraTasksName());
+
+  // Add any extra tasks we want to run.
+  if (!empty($extras)) {
+    $iTasks = $iTasks + $extras;
+  }
 
   // Allow each tasks to alter the tasks array.
   if (is_array($iTasks)) {
@@ -153,13 +164,23 @@ function itasks_install_tasks_alter(&$tasks, &$install_state) {
  * @param $install_state
  */
 function itasks_install_verify_requirements(&$install_state) {
-  itasks_includes();
-  $engine = new TaskEngine($install_state['profile_info'], $install_state);
+  // Load the required files.
+  itasks_autoload_library();
+
+  $engine = new \ITasks\TaskEngine($install_state['profile_info'], $install_state);
   $iTasks = $engine->getTasks("install");
+  $extras = $engine->getTasks($engine->getExtraTasksName());
+
+  // Add any extra tasks we want to run.
+  if (!empty($extras)) {
+    $iTasks = $iTasks + $extras;
+  }
 
   foreach ($iTasks as $task) {
     $dependencies = $task->requirements();
-    $install_state['profile_info']['dependencies'] = array_merge($install_state['profile_info']['dependencies'], $dependencies);
+    if (!is_null($dependencies)) {
+      $install_state['profile_info']['dependencies'] = array_merge($install_state['profile_info']['dependencies'], $dependencies);
+    }
   }
 
   // Remove the duplicates and run the original install_verify_requirements.
@@ -177,8 +198,10 @@ function itasks_install_verify_requirements(&$install_state) {
  * @param $install_state
  */
 function itask_run_install_task(&$install_state) {
-  itasks_includes();
-  $engine = new TaskEngine($install_state['profile_info'], $install_state);
+  // Load the required files.
+  itasks_autoload_library();
+
+  $engine = new \ITasks\TaskEngine($install_state['profile_info'], $install_state);
 
   $tasks = $engine->getTasks("install");
   $extras = $engine->getTasks($engine->getExtraTasksName());
@@ -194,7 +217,7 @@ function itask_run_install_task(&$install_state) {
   }
 
   // Call the bloody thing.
-  $tasks[$install_state['active_task']]->execute();
+  $tasks[$install_state['active_task']]->execute($install_state);
 
   if (function_exists("drush_log")) {
     $now = microtime(TRUE);
@@ -242,4 +265,3 @@ function itasks_install_finished() {
   // Flush all caches.
   drupal_flush_all_caches();
 }
-
