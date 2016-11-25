@@ -37,7 +37,6 @@ task[install][] = Stanford\Jumpstart\Install\Content\Importer\LoadImporterLibrar
 task[install][] = Stanford\Jumpstart\Install\GeneralSettings
 task[install][] = Stanford\Jumpstart\Install\PathologicSettings
 task[install][] = Stanford\Jumpstart\Install\User\UserSettings
-task[install][] = Stanford\Jumpstart\Install\User\SunetUser
 task[install][] = Stanford\Jumpstart\Install\User\HowardUser
 task[install][] = Stanford\Jumpstart\Install\User\LindseyUser
 task[install][] = Stanford\Jumpstart\Install\Block\BlockSettings
@@ -67,11 +66,13 @@ task[local][install][] = Environment\Local\Install\GeneralSettings
 
 ; SITES
 task[sites][install][] = Environment\Sites\Install\GeneralSettings
+task[sites][install][] = Environment\Sites\Install\User\SunetUser
 task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\DisableModules
 task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\EnableModules
 task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\ThemeSettings
 task[sites][install][] = Stanford\DrupalProfile\Install\StanfordSites\TMPDir
 task[sites][install][] = Stanford\Jumpstart\Install\Authentication
+
 
 ; ANCHORAGE
 task[anchorage][install][] = Environment\Anchorage\Install\GeneralSettings
